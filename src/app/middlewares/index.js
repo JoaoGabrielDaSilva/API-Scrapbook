@@ -1,3 +1,4 @@
 import log from './log';
+import check from './check';
 
-export default [log];
+export default [log, check];

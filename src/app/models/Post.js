@@ -31,7 +31,7 @@ class Post extends Model {
   static associate(models) {
     this.belongsTo(models.User, {
       as: 'user',
-      foreignKey: 'uid',
+      foreignKey: 'user_uid',
     });
   }
 }

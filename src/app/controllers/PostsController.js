@@ -12,7 +12,10 @@ class PostsController {
   }
 
   async index(request, response) {
+    const { limit = 5, offset = 0 } = request.query;
     const posts = await Post.findAll({
+      limit,
+      offset,
       attributes: ['uid', 'content', 'user_uid'],
     });
 
