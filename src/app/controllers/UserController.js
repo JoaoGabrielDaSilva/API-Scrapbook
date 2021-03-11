@@ -3,12 +3,15 @@ import Post from '../models/Post.js';
 
 class UserController {
   async show(request, response) {
-    const { uid } = request.params;
-    const user = await User.findByPk(uid, {
+    const { user } = request;
+
+    const result = await User.findByPk(user.id, {
       attributes: ['uid', 'name', 'email'],
     });
-    return response.json(user);
+
+    return response.json(result);
   }
+
   async index(request, response) {
     const { limit, page, name, email } = request.query;
     const where = {};
@@ -27,6 +30,8 @@ class UserController {
       where.email = email;
     }
 
+    console.log('chegou');
+
     const users = await User.findAndCountAll({
       where,
       limit,
@@ -44,6 +49,7 @@ class UserController {
 
     return response.json(users);
   }
+
   async store(request, response) {
     const { name, email, password } = request.body;
 
@@ -51,34 +57,22 @@ class UserController {
 
     return response.json(user);
   }
+
   async update(request, response) {
-    const { uid } = request.params;
     const { name, email } = request.body;
-    const parsed = Number.parseInt(uid);
-
-    if (Number.isNaN(parsed)) {
-      return response.status(400).json({
-        message: 'invalid ID',
-      });
-    }
-
-    if (!name || !email) {
-      return response.status(400).json({
-        message: 'invalid data',
-      });
-    }
 
     const user = await User.update(
       { name, email },
-      { where: { uid: parsed }, returning: true }
+      { where: { uid: request.userId }, returning: true }
     );
 
     return response.json(user);
   }
+
   async delete(request, response) {
-    const { uid } = request.params;
+    const { user } = request;
     await User.destroy({
-      where: { uid },
+      where: { uid: user.id },
     });
     return response.sendStatus(202);
   }

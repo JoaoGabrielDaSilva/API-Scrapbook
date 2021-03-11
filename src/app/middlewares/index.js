@@ -1,4 +1,5 @@
 import log from './log';
-import check from './check';
+// import user from './user';
+// import auth from './auth';
 
-export default [log, check];
+export default [log];

@@ -1,5 +1,6 @@
-import auth from './auth';
+// import auth from './auth';
 import post from './post';
 import user from './user';
+import client from './client';
 
-export default [auth, post, user];
+export default [post, user, client];

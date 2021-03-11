@@ -3,8 +3,9 @@ import databaseConfig from '../config/database';
 
 import User from '../app/models/User';
 import Post from '../app/models/Post';
+import Client from '../app/models/Client';
 
-const models = [User, Post];
+const models = [User, Post, Client];
 
 class DataBase {
   constructor() {
@@ -12,7 +13,15 @@ class DataBase {
   }
 
   init() {
-    this.connection = new Sequelize(databaseConfig);
+    if (process.env.NODE_ENV === 'test') {
+      this.connection = new Sequelize({
+        dialect: databaseConfig.dialect,
+        storage: databaseConfig.storage,
+        define: databaseConfig.define,
+      });
+    } else {
+      this.connection = new Sequelize(databaseConfig);
+    }
 
     models
       .map(model => model.init(this.connection))
